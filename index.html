@@ -1,0 +1,229 @@
+﻿<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تدريب الضرب</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      direction: rtl;
+    }
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 2.6rem;
+      color: #7dd3fc;
+    }
+    h2 {
+      margin: 22px 0 14px;
+      color: #bae6fd;
+      font-size: 1.6rem;
+    }
+    p, li {
+      line-height: 1.8;
+      color: #cbd5e1;
+    }
+    .card {
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.35);
+      margin-bottom: 22px;
+    }
+    .video-wrapper {
+      border-radius: 18px;
+      overflow: hidden;
+      margin-top: 18px;
+    }
+    .video-wrapper video {
+      width: 100%;
+      min-height: 320px;
+      border: none;
+      display: block;
+      background: #000;
+    }
+    .game {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
+    .game .panel {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .question {
+      padding: 18px;
+      border-radius: 16px;
+      background: rgba(30, 41, 59, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      font-size: 1.3rem;
+      text-align: center;
+      min-height: 96px;
+      display: grid;
+      place-items: center;
+    }
+    label {
+      display: block;
+      color: #e2e8f0;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    input[type="number"], button {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      background: #0f172a;
+      color: #e2e8f0;
+      font-size: 1rem;
+    }
+    button {
+      border: none;
+      cursor: pointer;
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: 700;
+    }
+    button:hover {
+      background: #7dd3fc;
+    }
+    .result {
+      min-height: 120px;
+      padding: 18px;
+      border-radius: 16px;
+      background: rgba(30, 41, 59, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.18);
+    }
+    .success {
+      color: #a7f3d0;
+    }
+    .error {
+      color: #fecaca;
+    }
+    .note {
+      color: #94a3b8;
+      font-size: 0.95rem;
+    }
+    @media (max-width: 920px) {
+      .game {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>تدريب الضرب</h1>
+      <p class="note">اعتمد فقط على الفيديو ثم حل الأسئلة داخل الموقع.</p>
+    </header>
+
+    <section class="card">
+      <h2>شاهد الفيديو</h2>
+      <p>هذا الفيديو المحلي يشرح طريقة ضرب عدد من 3 أرقام في عدد من 3 أرقام. بعد المشاهدة، انتقل إلى التمرين لتطبيق ما تعلمته.</p>
+      <div class="video-wrapper">
+        <video controls poster="" preload="metadata">
+          <source src="cris-cross3-3.mp4" type="video/mp4">
+          هذا المتصفح لا يدعم تشغيل الفيديو.
+        </video>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>تدريب الضرب: عدد من 3 أرقام × عدد من 3 أرقام</h2>
+      <p>يعطي الموقع رقمان عشوائيان من 3 أرقام لكل منهما. اكتب الناتج وسيخبرك ما إذا كانت الإجابة صحيحة.</p>
+      <div class="game">
+        <div class="panel">
+          <div class="question" id="questionDisplay">اضغط زر "سؤال جديد" لبدء التدريب.</div>
+          <button id="newQuestionBtn">سؤال جديد</button>
+
+          <label for="answer">أدخل الناتج</label>
+          <input type="number" id="answer" placeholder="اكتب الناتج هنا" autocomplete="off" />
+
+          <button id="checkBtn">تحقق من الإجابة</button>
+        </div>
+
+        <div class="panel">
+          <div class="result" id="resultMessage">سيظهر التقييم هنا بعد الإدخال.</div>
+          <div class="note">الأرقام تتراوح بين 100 و 999 فقط.</div>
+          <div class="note">أدخل الإجابة الصحيحة بالضبط دون تقريب.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const questionDisplay = document.getElementById('questionDisplay');
+    const answerInput = document.getElementById('answer');
+    const checkBtn = document.getElementById('checkBtn');
+    const newQuestionBtn = document.getElementById('newQuestionBtn');
+    const resultMessage = document.getElementById('resultMessage');
+
+    let currentQuestion = { num1: 0, num2: 0 };
+
+    function randomThreeDigit() {
+      return Math.floor(Math.random() * 900) + 100;
+    }
+
+    function setQuestion() {
+      const num1 = randomThreeDigit();
+      const num2 = randomThreeDigit();
+      currentQuestion = { num1, num2 };
+      questionDisplay.textContent = `احسب: ${num1} × ${num2}`;
+      answerInput.value = '';
+      resultMessage.textContent = 'أدخل الناتج ثم اضغط تحقق من الإجابة.';
+      resultMessage.className = 'result';
+    }
+
+    function checkAnswer() {
+      const answerText = answerInput.value.trim();
+      if (!answerText) {
+        resultMessage.textContent = 'يرجى كتابة الناتج قبل التحقق.';
+        resultMessage.className = 'result error';
+        return;
+      }
+
+      const answer = Number(answerText);
+      if (Number.isNaN(answer)) {
+        resultMessage.textContent = 'الرجاء إدخال رقم صالح فقط.';
+        resultMessage.className = 'result error';
+        return;
+      }
+
+      const correct = currentQuestion.num1 * currentQuestion.num2;
+      if (answer === correct) {
+        resultMessage.textContent = `صحيح! ${currentQuestion.num1} × ${currentQuestion.num2} = ${correct}.`;
+        resultMessage.className = 'result success';
+      } else {
+        resultMessage.textContent = `خطأ. الإجابة الصحيحة هي ${correct}. حاول مرة أخرى.`;
+        resultMessage.className = 'result error';
+      }
+    }
+
+    newQuestionBtn.addEventListener('click', setQuestion);
+    checkBtn.addEventListener('click', checkAnswer);
+    answerInput.addEventListener('keyup', (event) => {
+      if (event.key === 'Enter') {
+        checkAnswer();
+      }
+    });
+
+    setQuestion();
+  </script>
+</body>
+</html>
